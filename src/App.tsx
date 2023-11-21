@@ -1,4 +1,5 @@
 import React from 'react'
+import Main from './elements/Main'
 
 const App: React.FC = () => {
   return (
@@ -6,6 +7,7 @@ const App: React.FC = () => {
       <header style={{ textAlign: 'center' }}>
         <h1>都道府県別総人口推移グラフ</h1>
       </header>
+      <Main />
     </div>
   )
 }
