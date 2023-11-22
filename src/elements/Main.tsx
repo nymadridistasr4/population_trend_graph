@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import CheckField from './Check'
 import Graph from './Graph'
 import axios from 'axios'
-import * as Sentry from '@sentry/react'
 
 // スタイルの定義
 const Styles: { [key: string]: React.CSSProperties } = {
@@ -76,17 +75,13 @@ const Main: React.FC = () => {
   // 初回レンダリング時に都道府県データを取得
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const results = await axios.get(
-          'https://opendata.resas-portal.go.jp/api/v1/prefectures',
-          {
-            headers: { 'X-API-KEY': process.env.REACT_APP_API_KEY },
-          }
-        )
-        setPreFectures(results.data)
-      } catch (error) {
-        Sentry.captureException(error) // Sentryにエラーを送信
-      }
+      const results = await axios.get(
+        'https://opendata.resas-portal.go.jp/api/v1/prefectures',
+        {
+          headers: { 'X-API-KEY': process.env.REACT_APP_API_KEY },
+        }
+      )
+      setPreFectures(results.data)
     }
 
     fetchData()
@@ -102,59 +97,55 @@ const Main: React.FC = () => {
       // チェックされたら選択中の都道府県を更新
       setSelectedPrefecture(prefName)
 
-      try {
-        // 総人口データを取得し、新しく選択された都道府県のデータを追加
-        const totalResponse = await axios.get(
-          `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?prefCode=${prefCode}`,
-          {
-            headers: { 'X-API-KEY': process.env.REACT_APP_API_KEY },
-          }
-        )
-        setTotalPopulation((prevPopulation) => [
-          ...prevPopulation,
-          { prefName, data: totalResponse.data.result.data[0].data },
-        ])
+      // 総人口データを取得し、新しく選択された都道府県のデータを追加
+      const totalResponse = await axios.get(
+        `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?prefCode=${prefCode}`,
+        {
+          headers: { 'X-API-KEY': process.env.REACT_APP_API_KEY },
+        }
+      )
+      setTotalPopulation((prevPopulation) => [
+        ...prevPopulation,
+        { prefName, data: totalResponse.data.result.data[0].data },
+      ])
 
-        // 年少人口データを取得し、新しく選択された都道府県のデータを追加
-        const youngResponse = await axios.get(
-          `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?prefCode=${prefCode}&cityCode=-&gender=1&generation=0-9`,
-          {
-            headers: { 'X-API-KEY': process.env.REACT_APP_API_KEY },
-          }
-        )
-        setYoungPopulation((prevPopulation) => [
-          ...prevPopulation,
-          { prefName, data: youngResponse.data.result.data[1].data },
-        ])
+      // 年少人口データを取得し、新しく選択された都道府県のデータを追加
+      const youngResponse = await axios.get(
+        `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?prefCode=${prefCode}&cityCode=-&gender=1&generation=0-9`,
+        {
+          headers: { 'X-API-KEY': process.env.REACT_APP_API_KEY },
+        }
+      )
+      setYoungPopulation((prevPopulation) => [
+        ...prevPopulation,
+        { prefName, data: youngResponse.data.result.data[1].data },
+      ])
 
-        // 生産年齢人口データを取得し、新しく選択された都道府県のデータを追加
-        const productiveResponse = await axios.get(
-          // 生産年齢人口のリクエストパラメータを追加
-          `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?prefCode=${prefCode}&cityCode=-&gender=1&generation=15-64`,
-          {
-            headers: { 'X-API-KEY': process.env.REACT_APP_API_KEY },
-          }
-        )
-        setProductivePopulation((prevPopulation) => [
-          ...prevPopulation,
-          { prefName, data: productiveResponse.data.result.data[2].data },
-        ])
+      // 生産年齢人口データを取得し、新しく選択された都道府県のデータを追加
+      const productiveResponse = await axios.get(
+        // 生産年齢人口のリクエストパラメータを追加
+        `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?prefCode=${prefCode}&cityCode=-&gender=1&generation=15-64`,
+        {
+          headers: { 'X-API-KEY': process.env.REACT_APP_API_KEY },
+        }
+      )
+      setProductivePopulation((prevPopulation) => [
+        ...prevPopulation,
+        { prefName, data: productiveResponse.data.result.data[2].data },
+      ])
 
-        // 老年人口データを取得し、新しく選択された都道府県のデータを追加
-        const elderlyResponse = await axios.get(
-          // 老年人口のリクエストパラメータを追加
-          `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?prefCode=${prefCode}&cityCode=-&gender=1&generation=65-`,
-          {
-            headers: { 'X-API-KEY': process.env.REACT_APP_API_KEY },
-          }
-        )
-        setElderlyPopulation((prevPopulation) => [
-          ...prevPopulation,
-          { prefName, data: elderlyResponse.data.result.data[3].data },
-        ])
-      } catch (error) {
-        Sentry.captureException(error) // Sentryにエラーを送信
-      }
+      // 老年人口データを取得し、新しく選択された都道府県のデータを追加
+      const elderlyResponse = await axios.get(
+        // 老年人口のリクエストパラメータを追加
+        `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?prefCode=${prefCode}&cityCode=-&gender=1&generation=65-`,
+        {
+          headers: { 'X-API-KEY': process.env.REACT_APP_API_KEY },
+        }
+      )
+      setElderlyPopulation((prevPopulation) => [
+        ...prevPopulation,
+        { prefName, data: elderlyResponse.data.result.data[3].data },
+      ])
     } else {
       // チェックが外れた場合は対象の都道府県データを削除
       setTotalPopulation((prevPopulation) =>
