@@ -1,3 +1,5 @@
+// src/elements/Graph.tsx
+
 import React from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
@@ -15,10 +17,11 @@ type Props = {
     prefName: string
     data: { year: number; value: number }[]
   }[]
+  graphType: 'total' | 'young' | 'productive' | 'elderly'
 }
 
 // 選んだ都道府県の人口推移グラフを表示するコンポーネント
-const Graph: React.FC<Props> = ({ populationdata }) => {
+const Graph: React.FC<Props> = ({ populationdata, graphType }) => {
   // グラフのデータとカテゴリを保持するための配列
   const series: Highcharts.SeriesOptionsType[] = []
   const categories: string[] = []
@@ -41,10 +44,35 @@ const Graph: React.FC<Props> = ({ populationdata }) => {
     })
   }
 
+  // グラフのタイトルと縦軸ラベルを種類に応じて設定
+  let title = ''
+  let yAxisLabel = ''
+
+  switch (graphType) {
+    case 'total':
+      title = '総人口推移'
+      yAxisLabel = '総人口数'
+      break
+    case 'young':
+      title = '年少人口推移'
+      yAxisLabel = '年少人口数'
+      break
+    case 'productive':
+      title = '生産年齢人口推移'
+      yAxisLabel = '生産年齢人口数'
+      break
+    case 'elderly':
+      title = '老年人口推移'
+      yAxisLabel = '老年人口数'
+      break
+    default:
+      break
+  }
+
   // Highcharts グラフのオプション
   const options: Highcharts.Options = {
     title: {
-      text: '総人口推移',
+      text: title,
     },
     xAxis: {
       title: {
@@ -54,10 +82,9 @@ const Graph: React.FC<Props> = ({ populationdata }) => {
     },
     yAxis: {
       title: {
-        text: '人口数',
+        text: yAxisLabel,
       },
     },
-    // 都道府県を一つも選んでいない場合との分岐条件
     series:
       series.length === 0
         ? [{ type: 'line', name: '都道府県名', data: [] }]
