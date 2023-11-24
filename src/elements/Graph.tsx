@@ -91,7 +91,7 @@ const Graph: React.FC<Props> = ({ populationdata, graphType }) => {
 
   // HighchartsReact コンポーネントを使ってグラフを描画
   return (
-    <div style={Styles.graph}>
+    <div style={Styles.graph} data-testid="graph-container">
       <HighchartsReact highcharts={Highcharts} options={options} />
     </div>
   )
