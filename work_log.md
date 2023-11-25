@@ -46,5 +46,11 @@
 ## 2023/11/25(Sat)
 
 - [x] テスト修正
+- [x] Vercelにデプロイ
 
-- 作業時間：150min
+- 参考コード
+
+  - https://zenn.dev/icck/articles/f7aa3f5304cd1a
+  - https://vercel.com/docs/projects/environment-variables
+
+- 作業時間：270min
