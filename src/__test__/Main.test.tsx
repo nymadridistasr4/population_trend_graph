@@ -1,9 +1,7 @@
 import React from 'react'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import Main from '../elements/Main'
 import Check from '../elements/Check'
-import Graph from '../elements/Graph'
 
 // API呼び出しをモック
 jest.mock('axios')
@@ -35,4 +33,6 @@ describe('Main Component', () => {
     // チェックボックスが選択されていないことを確認
     expect(screen.getByLabelText('北海道')).not.toBeChecked()
   })
+
+  // 他のテストケースも同様に追加
 })
