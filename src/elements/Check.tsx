@@ -28,7 +28,7 @@ const Styles: { [key: string]: React.CSSProperties } = {
 }
 
 // 都道府県一覧のチェックボックスを表示するコンポーネント
-const Check: React.FC<Props> = ({ prefectures, onChange }) => {
+const Check: React.FC<Props> = ({ prefectures = [], onChange }) => {
   return (
     <>
       {/* チェックボックスリスト */}

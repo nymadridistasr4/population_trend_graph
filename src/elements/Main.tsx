@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import CheckField from './Check'
+import Check from './Check'
 import Graph from './Graph'
 import axios from 'axios'
 
@@ -123,7 +123,6 @@ const Main: React.FC = () => {
 
       // 生産年齢人口データを取得し、新しく選択された都道府県のデータを追加
       const productiveResponse = await axios.get(
-        // 生産年齢人口のリクエストパラメータを追加
         `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?prefCode=${prefCode}&cityCode=-&gender=1&generation=15-64`,
         {
           headers: { 'X-API-KEY': process.env.REACT_APP_API_KEY },
@@ -136,7 +135,6 @@ const Main: React.FC = () => {
 
       // 老年人口データを取得し、新しく選択された都道府県のデータを追加
       const elderlyResponse = await axios.get(
-        // 老年人口のリクエストパラメータを追加
         `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?prefCode=${prefCode}&cityCode=-&gender=1&generation=65-`,
         {
           headers: { 'X-API-KEY': process.env.REACT_APP_API_KEY },
@@ -160,6 +158,8 @@ const Main: React.FC = () => {
       setElderlyPopulation((prevPopulation) =>
         prevPopulation.filter((p) => p.prefName !== prefName)
       )
+      // 選択中の都道府県もクリア
+      setSelectedPrefecture(null)
     }
   }
 
@@ -176,7 +176,7 @@ const Main: React.FC = () => {
       {prefectures && (
         <>
           {/* チェックボックスコンポーネント */}
-          <CheckField
+          <Check
             prefectures={prefectures.result}
             onChange={handleCheckboxChange}
           />
