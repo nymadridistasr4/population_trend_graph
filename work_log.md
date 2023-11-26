@@ -46,7 +46,7 @@
 ## 2023/11/25(Sat)
 
 - [x] テスト修正
-- [x] Vercelにデプロイ
+- [x] `Vercel` にデプロイ
 
 - 参考コード
 
@@ -54,3 +54,14 @@
   - https://vercel.com/docs/projects/environment-variables
 
 - 作業時間：270min
+
+## 2023/11/26(Sun)
+
+- [x] `README` 修正
+- [x] タブのアイコン変更
+
+- 参考コード
+
+  - https://qiita.com/TK_WebSE/items/ddd1d4356f1d9fc3b900
+
+- 作業時間：45min
